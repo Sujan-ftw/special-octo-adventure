@@ -34,8 +34,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'student' && !empty($_SESS
     if ($r = $res->fetch_assoc()) {
         $department = $r['department'];
     }
-        $stmt->close();
-    }
+    $stmt->close();
     if(isset($iqac)) $iqac->close();
 }
 
