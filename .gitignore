@@ -1,0 +1,29 @@
+# Uploaded files
+uploads/gallery/*
+uploads/department_content/*
+uploads/mou/*
+uploads/images/*
+!uploads/gallery/.gitkeep
+!uploads/department_content/.gitkeep
+!uploads/mou/.gitkeep
+!uploads/images/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+error_log
+
+# Database backups
+*.sql.backup
+*.sql.bak
