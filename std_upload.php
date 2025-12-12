@@ -1,7 +1,11 @@
 <?php
 // std_upload.php - student profile completion form and save
 require_once 'utils.php';
-session_start();
+
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'student') {
     // Redirect non-logged-in or non-students to login/register
