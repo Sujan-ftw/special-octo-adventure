@@ -175,4 +175,18 @@ function start_html($title, $css, $nav_links, $current_page) {
 <main>
 ";
 }
+
+// Alias function for generate_header - wrapper around start_html
+function generate_header($title, $css = null, $nav_links_override = null) {
+    global $shared_css, $nav_links;
+    $css = $css ?? $shared_css;
+    $nav_links_override = $nav_links_override ?? $nav_links;
+    $current_page = basename($_SERVER['PHP_SELF']);
+    start_html($title, $css, $nav_links_override, $current_page);
+}
+
+// Function to generate footer
+function generate_footer() {
+    require_once 'footer.php';
+}
 ?>

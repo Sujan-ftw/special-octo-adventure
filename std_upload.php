@@ -1,6 +1,6 @@
 <?php
 // std_upload.php - student profile completion form and save
-require_once 'config.php';
+require_once 'utils.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'student') {
@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'student') {
     exit;
 }
 
-$iqac = iqac_db_connect();
+$iqac = connectDatabase();
 
 $message = '';
 $error = '';
@@ -101,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_save'])) {
 }
 
 require_once 'header.php';
-require_once 'generate_footer.php';
 generate_header("Complete Student Profile");
 ?>
 
@@ -137,4 +136,28 @@ generate_header("Complete Student Profile");
     <div class="form-group"><label>Student Mobile</label><input name="student_mobile" /></div>
     <div class="form-group"><label>Father Mobile</label><input name="father_mobile" /></div>
     <div class="form-group"><label>Father Name</label><input name="father_name" /></div>
-    <div class="form-group"><label>Mother Name</label
+    <div class="form-group"><label>Mother Name</label><input name="mother_name" /></div>
+    <div class="form-group"><label>Father Occupation</label><input name="father_occupation" /></div>
+    <div class="form-group"><label>Mother Occupation</label><input name="mother_occupation" /></div>
+    <div class="form-group"><label>Father Income</label><input type="number" step="0.01" name="father_income" /></div>
+    <div class="form-group"><label>Admission Date</label><input type="date" name="admission_date" /></div>
+    <div class="form-group"><label>Batch Year</label><input name="batch_year" placeholder="e.g., 2023-2024" /></div>
+
+    <div class="form-group">
+      <label><input type="checkbox" name="management_quota" /> Management Quota</label>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" name="counseling_quota" /> Counseling Quota</label>
+    </div>
+
+    <div class="form-group"><label>Student Photo</label><input type="file" name="student_photo" accept="image/*" /></div>
+    <div class="form-group"><label>Father Photo</label><input type="file" name="father_photo" accept="image/*" /></div>
+    <div class="form-group"><label>Mother Photo</label><input type="file" name="mother_photo" accept="image/*" /></div>
+
+    <div class="form-group" style="grid-column: 1 / -1;">
+      <button type="submit" name="student_save" class="btn">Save Profile</button>
+    </div>
+  </form>
+</div>
+
+<?php generate_footer(); ?>
