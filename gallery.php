@@ -1,13 +1,10 @@
 <?php
 // gallery.php (MODIFIED: restrict department select to student's registered department when applicable)
-require_once 'dp_connection.php';
+require_once 'utils.php';
 require_once 'header.php'; // Includes session_start() and role definition
 
 // Connect to mou DB
-$conn = new mysqli('localhost', 'root', '', 'mou');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = connectMouDatabase();
 
 // Fetch distinct departments and companies
 $departments = [];
@@ -29,15 +26,14 @@ $company = isset($_GET['company']) ? $_GET['company'] : ($companies[0] ?? '');
 // If student and profile complete, lock to their department
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'student' && !empty($_SESSION['student_id'])) {
     // fetch student's department from iqac DB
-    $iqac = new mysqli('localhost','root','','iqac');
-    if (!$iqac->connect_error) {
-        $stmt = $iqac->prepare("SELECT department FROM students WHERE id = ?");
-        $stmt->bind_param("i", $_SESSION['student_id']);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        if ($r = $res->fetch_assoc()) {
-            $department = $r['department'];
-        }
+    $iqac = connectDatabase();
+    $stmt = $iqac->prepare("SELECT department FROM students WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['student_id']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($r = $res->fetch_assoc()) {
+        $department = $r['department'];
+    }
         $stmt->close();
     }
     if(isset($iqac)) $iqac->close();

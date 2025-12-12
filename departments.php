@@ -1,17 +1,10 @@
 <?php
 // departments.php (MODIFIED to restrict department selection for students)
+require_once 'utils.php';
 require_once 'header.php'; // Includes session_start() and role definition
 
 // Connect to mou DB for mou_files
-$host = 'localhost';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'mou';
-
-$conn = new mysqli($host, $dbUser, $dbPass, $dbName);
-if ($conn->connect_error) {
-    die('Database connection failed: ' . $conn->connect_error);
-}
+$conn = connectMouDatabase();
 
 $selectedDepartment = isset($_GET['department']) ? $_GET['department'] : '';
 $selectedYear = isset($_GET['year']) ? $_GET['year'] : '';
@@ -20,20 +13,18 @@ $selectedYear = isset($_GET['year']) ? $_GET['year'] : '';
 $student_department = null;
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'student' && !empty($_SESSION['student_id'])) {
     // fetch from iqac DB
-    $iqac = new mysqli('localhost','root','','iqac');
-    if (!$iqac->connect_error) {
-        $stmt = $iqac->prepare("SELECT department FROM students WHERE id = ?");
-        $stmt->bind_param("i", $_SESSION['student_id']);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        if ($row = $res->fetch_assoc()) {
-            $student_department = $row['department'];
-            // override any selectedDepartment from query
-            $selectedDepartment = $student_department;
-        }
-        $stmt->close();
+    $iqac = connectDatabase();
+    $stmt = $iqac->prepare("SELECT department FROM students WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['student_id']);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $student_department = $row['department'];
+        // override any selectedDepartment from query
+        $selectedDepartment = $student_department;
     }
-    if(isset($iqac)) $iqac->close();
+    $stmt->close();
+    $iqac->close();
 }
 
 $mous = [];

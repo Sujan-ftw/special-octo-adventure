@@ -15,6 +15,17 @@ function connectDatabase() {
     if ($conn->connect_error) {
         die("Database Connection Failed: " . $conn->connect_error);
     }
+    $conn->set_charset("utf8mb4");
+    return $conn;
+}
+
+// Connect to MOU database
+function connectMouDatabase() {
+    $conn = new mysqli('localhost', 'root', '', 'mou');
+    if ($conn->connect_error) {
+        die("MOU Database Connection Failed: " . $conn->connect_error);
+    }
+    $conn->set_charset("utf8mb4");
     return $conn;
 }
 

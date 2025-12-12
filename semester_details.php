@@ -1,9 +1,7 @@
 <?php
+require_once 'utils.php';
 // Connect to database
-$conn = new mysqli("localhost", "root", "", "iqac");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = connectDatabase();
 
 // Fetch students list
 $students_list = [];
