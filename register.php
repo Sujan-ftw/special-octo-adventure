@@ -2,7 +2,7 @@
 session_start();
 
 // Connect to database
-$conn = new mysqli('localhost', 'root', '', 'iqac');
+$conn = new mysqli('localhost', 'root', '', 'i');
 
 if ($conn->connect_error) {
     die('Connection failed: ' . $conn->connect_error);

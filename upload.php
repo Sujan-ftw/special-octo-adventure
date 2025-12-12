@@ -1,6 +1,6 @@
 <?php
 // Database connection details
-$host='localhost'; $user='root'; $pass=''; $db='mou';
+$host='localhost'; $user='root'; $pass=''; $db='m';
 $conn=new mysqli($host,$user,$pass,$db);
 if($conn->connect_error) die("DB connection error: " . $conn->connect_error);
 

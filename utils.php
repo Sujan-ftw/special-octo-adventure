@@ -14,7 +14,7 @@ if (!function_exists('h')) {
 // or a separate config file with restricted permissions, not hardcoded.
 // Current configuration is suitable for local XAMPP development.
 function connectDatabase() {
-    $conn = new mysqli('localhost', 'root', '', 'iqac');
+    $conn = new mysqli('localhost', 'root', '', 'i');
     if ($conn->connect_error) {
         die("Database Connection Failed: " . $conn->connect_error);
     }
@@ -24,7 +24,7 @@ function connectDatabase() {
 
 // Connect to MOU database
 function connectMouDatabase() {
-    $conn = new mysqli('localhost', 'root', '', 'mou');
+    $conn = new mysqli('localhost', 'root', '', 'm');
     if ($conn->connect_error) {
         die("MOU Database Connection Failed: " . $conn->connect_error);
     }

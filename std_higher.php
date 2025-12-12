@@ -1,6 +1,6 @@
 <?php
 // Database connection
-$conn=new mysqli('localhost','root','','iqac');
+$conn=new mysqli('localhost','root','','i');
 if($conn->connect_error){
     die('Connection failed: '.$conn->connect_error);
 }

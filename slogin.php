@@ -3,7 +3,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = intval($_POST['student_id']);
     // Connect to database
-    $host='localhost'; $user='root'; $pass=''; $db='iqac';
+    $host='localhost'; $user='root'; $pass=''; $db='i';
     $conn=new mysqli($host,$user,$pass,$db);
     if($conn->connect_error) die("DB connection error: " . $conn->connect_error);
 
