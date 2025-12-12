@@ -10,6 +10,9 @@ if (!function_exists('h')) {
 }
 
 // Add global helpers here like database connections or permissions.
+// NOTE: For production use, database credentials should be stored in environment variables
+// or a separate config file with restricted permissions, not hardcoded.
+// Current configuration is suitable for local XAMPP development.
 function connectDatabase() {
     $conn = new mysqli('localhost', 'root', '', 'iqac');
     if ($conn->connect_error) {
