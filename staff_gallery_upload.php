@@ -7,9 +7,18 @@ $user_id = get_user_id();
 $message = '';
 $error = '';
 
+// Generate CSRF token
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Handle image upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_image'])) {
-    $title = trim($_POST['title'] ?? '');
+    // CSRF protection
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error = "Invalid request. Please try again.";
+    } else {
+        $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $category = $_POST['category'] ?? '';
     
@@ -48,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_image'])) {
         }
     } else {
         $error = "Please select an image to upload.";
+    }
     }
 }
 
@@ -238,6 +248,7 @@ $conn->close();
             <?php endif; ?>
 
             <form method="POST" action="staff_gallery_upload.php" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token']) ?>">
                 <div class="form-group">
                     <label for="title"><i class="fa-solid fa-heading"></i> Image Title *</label>
                     <input type="text" id="title" name="title" placeholder="e.g., Annual Day 2024" required>

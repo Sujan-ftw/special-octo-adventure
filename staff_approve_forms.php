@@ -7,9 +7,18 @@ $user_id = get_user_id();
 $message = '';
 $error = '';
 
+// Generate CSRF token
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Handle form approval/rejection
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $registration_id = intval($_POST['registration_id'] ?? 0);
+    // CSRF protection
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error = "Invalid request. Please try again.";
+    } else {
+        $registration_id = intval($_POST['registration_id'] ?? 0);
     $action = $_POST['action'];
     $comments = trim($_POST['comments'] ?? '');
     
@@ -26,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $error = "Failed to update registration status.";
         }
         $stmt->close();
+    }
     }
 }
 
@@ -300,6 +310,7 @@ $conn->close();
                         </div>
                         
                         <form method="POST" action="staff_approve_forms.php">
+                            <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token']) ?>">
                             <input type="hidden" name="registration_id" value="<?= $reg['id'] ?>">
                             <textarea name="comments" placeholder="Add comments (optional)" class="comment-input" rows="2"></textarea>
                             <div class="form-actions">

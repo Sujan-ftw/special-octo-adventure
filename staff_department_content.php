@@ -7,9 +7,18 @@ $user_id = get_user_id();
 $message = '';
 $error = '';
 
+// Generate CSRF token
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Handle content upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_content'])) {
-    $department = trim($_POST['department'] ?? '');
+    // CSRF protection
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error = "Invalid request. Please try again.";
+    } else {
+        $department = trim($_POST['department'] ?? '');
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
     $content_type = $_POST['content_type'] ?? '';
@@ -53,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_content'])) {
             // For now, just show success
             $message = "Department content uploaded successfully!";
         }
+    }
     }
 }
 
@@ -243,6 +253,7 @@ $conn->close();
             <?php endif; ?>
 
             <form method="POST" action="staff_department_content.php" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token']) ?>">
                 <div class="form-group">
                     <label for="department"><i class="fa-solid fa-building"></i> Department *</label>
                     <select id="department" name="department" required>

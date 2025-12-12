@@ -7,6 +7,11 @@ $user_id = get_user_id();
 $message = '';
 $error = '';
 
+// Generate CSRF token
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Get staff allocated subjects
 $allocated_subjects = [];
 $stmt = $conn->prepare("SELECT * FROM staff_subjects WHERE user_id = ?");
@@ -30,7 +35,11 @@ $stmt->close();
 
 // Handle marks entry
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_marks'])) {
-    $student_id = intval($_POST['student_id'] ?? 0);
+    // CSRF protection
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error = "Invalid request. Please try again.";
+    } else {
+        $student_id = intval($_POST['student_id'] ?? 0);
     $semester = intval($_POST['semester'] ?? 0);
     $register_number = trim($_POST['register_number'] ?? '');
     $subjects_data = $_POST['subjects'] ?? [];
@@ -89,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_marks'])) {
         $stmt->close();
     } else {
         $error = "Please fill in all required fields.";
+    }
     }
 }
 
@@ -296,6 +306,7 @@ $conn->close();
             <?php endif; ?>
 
             <form method="POST" action="staff_marks_entry.php" id="marksForm">
+                <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token']) ?>">
                 <div class="form-group">
                     <label for="student_id"><i class="fa-solid fa-user"></i> Select Student</label>
                     <select id="student_id" name="student_id" required>

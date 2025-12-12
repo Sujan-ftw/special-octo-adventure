@@ -37,9 +37,17 @@ if ($student_id) {
     $stmt->close();
 }
 
+// Generate CSRF token
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_registration'])) {
-    if (!$student_id) {
+    // CSRF protection
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error = "Invalid request. Please try again.";
+    } elseif (!$student_id) {
         $error = "Please complete your student profile first.";
     } else {
         $form_type = $_POST['form_type'] ?? '';
@@ -292,6 +300,7 @@ $conn->close();
                 <p class="message error">Please complete your student profile before registering for activities.</p>
             <?php else: ?>
                 <form method="POST" action="student_register.php">
+                    <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token']) ?>">
                     <div class="form-group">
                         <label for="form_type"><i class="fa-solid fa-list"></i> Registration Type</label>
                         <select id="form_type" name="form_type" required>
