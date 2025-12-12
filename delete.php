@@ -1,13 +1,13 @@
 <?php
 // delete.php (MODIFIED - Security Check Added)
 session_start();
+require_once 'utils.php';
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
     die("Access Denied: Only staff can delete records.");
 }
 
-$host='localhost'; $user='root'; $pass=''; $db='mou';
-$conn=new mysqli($host,$user,$pass,$db);
-if($conn->connect_error) die("DB connection error: " . $conn->connect_error);
+$conn = connectMouDatabase();
 
 if(!isset($_GET['id'])) {
     die("No ID specified");

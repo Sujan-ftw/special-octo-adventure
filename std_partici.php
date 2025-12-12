@@ -1,6 +1,6 @@
 <?php
 // Connect to database
-$conn = new mysqli("localhost", "root", "", "iqac");
+$conn = new mysqli("localhost", "root", "", "i");
 
 // Check connection
 if ($conn->connect_error) {

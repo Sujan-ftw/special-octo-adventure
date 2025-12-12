@@ -6,7 +6,7 @@
 $host = 'localhost'; 
 $db_user = 'root'; 
 $db_password = ''; // Default XAMPP password is empty
-$db_name = 'iqac'; // Name of the IQAC database
+$db_name = 'i'; // Name of the I database
 
 // Create connection
 $conn = new mysqli($host, $db_user, $db_password, $db_name);

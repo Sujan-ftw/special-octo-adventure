@@ -1,6 +1,6 @@
 <?php
 // addmission.php (Staff Only)
-require_once 'dp_connection.php';
+require_once 'utils.php';
 require_once 'header.php'; 
 
 // --- ACCESS CHECK: MUST BE STAFF ---
@@ -10,8 +10,7 @@ if (!$is_staff) {
 // --- END ACCESS CHECK ---
 
 // --- DB LOGIC ---
-$db_conn = new mysqli('localhost', 'root', '', 'iqac'); // Using IQAC db
-if ($db_conn->connect_error) { die("DB Connection Failed: " . $db_conn->connect_error); }
+$db_conn = connectDatabase(); // Using centralized database connection
 
 $default_intake_year1 = 60; 
 $default_intake_year2 = 30; 

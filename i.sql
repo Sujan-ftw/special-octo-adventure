@@ -1,9 +1,9 @@
 -- Create database
-CREATE DATABASE IF NOT EXISTS `iqac`
+CREATE DATABASE IF NOT EXISTS `i`
   DEFAULT CHARACTER SET utf8mb4
   COLLATE utf8mb4_general_ci;
 
-USE `iqac`;
+USE `i`;
 
 ------------------------------------------------------------
 -- 1. students

@@ -4,7 +4,7 @@ session_start();
 // if (!isset($_SESSION['staff_id'])) { header('Location: staff_login.php'); exit(); }
 
 // Database connection
-$conn = new mysqli("localhost", "root", "", "iqac");
+$conn = new mysqli("localhost", "root", "", "i");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
