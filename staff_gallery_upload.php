@@ -58,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_image'])) {
     } else {
         $error = "Please select an image to upload.";
     }
-    }
 }
 
 $conn->close();

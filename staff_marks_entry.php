@@ -99,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_marks'])) {
     } else {
         $error = "Please fill in all required fields.";
     }
-    }
 }
 
 $conn->close();

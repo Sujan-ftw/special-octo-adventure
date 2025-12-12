@@ -63,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_content'])) {
             $message = "Department content uploaded successfully!";
         }
     }
-    }
 }
 
 $conn->close();
